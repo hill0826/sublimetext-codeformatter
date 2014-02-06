@@ -5,6 +5,7 @@ import getopt
 import re
 import string
 import errno
+import sublime
 try:
  	# Python 3
 	from .__version__ import __version__
@@ -356,6 +357,15 @@ class Beautifier:
         except (ValueError):
             # Python 2
             from unpackers import unpackers as unpackers
+        except (ImportError):
+            # Path errors!!
+            PACKAGES_PATH = sublime.packages_path()
+            pathname = PACKAGES_PATH + '\\CodeFormatter\\codeformatter\\lib\\jsbeautifier'
+            sys.path.insert(0, pathname)
+            try:
+                import unpackers
+            finally:
+                sys.path.remove(pathname)
 
 
 
